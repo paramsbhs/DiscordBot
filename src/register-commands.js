@@ -3,6 +3,10 @@ const{REST, Routes, ApplicationCommandOptionType} = require('discord.js');
 
 const commands = [
     {
+        name: 'goat',
+        description: 'Sends a goat',
+    },
+    {
         name: 'hey',
         description: 'Replies with hey!',
     },
@@ -41,6 +45,10 @@ const commands = [
                 required: true,
             },
         ]
+    },
+    {
+        name: 'ping',
+        description: 'Sends the ping',
     },
 ];
 

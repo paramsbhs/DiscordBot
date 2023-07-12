@@ -1,6 +1,6 @@
 require('dotenv').config(); //get global var
 
-const {Client, IntentsBitField} = require('discord.js'); 
+const {Client, IntentsBitField, EmbedBuilder} = require('discord.js'); 
 //use nodemon to start
 
 const client = new Client({
@@ -12,7 +12,10 @@ const client = new Client({
     ],
 });
 
-client.on('ready', (c) => {console.log(`✅ ${c.user.username} is started up!`)}) //sends a message in the terminal
+//eventHandler(client);
+client.on('ready', (c) => {
+    console.log(`✅ ${c.user.tag} is online.`);
+  });
 
 client.on('messageCreate', (message)=> { //()=> is a callback function
     if(message.author.bot){
@@ -39,6 +42,11 @@ client.on('interactionCreate', (interaction) => { //interactions from commands
         const first = interaction.options.get('first-number')?.value;
         const second = interaction.options.get('second-number')?.value;
         interaction.reply(`The sum is ${first + second}`)
+    }
+
+    if(interaction.commandName === 'goat'){
+        const embed = new EmbedBuilder().setTitle('Goat').setColor('Random').setImage('https://i.natgeofe.com/n/e9023026-7589-45ac-9e71-e510730329f3/Goat-portrait_4x3.jpg');
+        interaction.reply({ embeds: [embed]});
     }
 })
 
