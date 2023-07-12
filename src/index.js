@@ -24,4 +24,22 @@ client.on('messageCreate', (message)=> { //()=> is a callback function
     }
 } ); 
 
+client.on('interactionCreate', (interaction) => { //interactions from commands
+    if(!interaction.isChatInputCommand()) return;
+    
+    if(interaction.commandName === 'hey'){
+        interaction.reply('Hello!');
+    }
+
+    if(interaction.commandName === 'time'){
+        interaction.reply('Current Time: 12:53PM');
+    }
+
+    if(interaction.commandName === 'add'){
+        const first = interaction.options.get('first-number')?.value;
+        const second = interaction.options.get('second-number')?.value;
+        interaction.reply(`The sum is ${first + second}`)
+    }
+})
+
 client.login(process.env.TOKEN); //logs the bot in
