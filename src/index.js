@@ -40,7 +40,7 @@ client.on('ready', (c) => {
     console.log(`✅ ${c.user.tag} is online.`);
 
     setInterval(() => {
-        let random = Maath.floor(Math.random() * status.length);
+        let random = Math.floor(Math.random() * status.length);
         client.user.setActivity(status[random]);
     }, 10000);
 });
@@ -80,7 +80,7 @@ client.on('messageCreate', (message)=> { //()=> is a callback function
     }
 } ); 
 
-client.on('interactionCreate', (interaction) => { //interactions from commands
+client.on('interactionCreate', async (interaction) => { //interactions from commands
     if(!interaction.isChatInputCommand()) return;
     
     if(interaction.commandName === 'hey'){
@@ -88,7 +88,16 @@ client.on('interactionCreate', (interaction) => { //interactions from commands
     }
 
     if(interaction.commandName === 'time'){
-        interaction.reply('Current Time: 12:53PM');
+        await interaction.deferReply();
+        const moment = require('moment');
+        const now = moment();
+        const nowString = now.format('YYYY-MM-DD HH:mm:ss');
+        interaction.editReply(`The current date and time is ${nowString}`);
+    }
+
+    if(interaction.commandName === 'ping'){
+        const ping = interaction.options.get('ping')?.value;
+        interaction.reply(`Ping is ${ping}`);
     }
 
     if(interaction.commandName === 'add'){
