@@ -1,6 +1,6 @@
 require('dotenv').config(); //get global var
 
-const {Client, IntentsBitField, EmbedBuilder} = require('discord.js'); 
+const {Client, IntentsBitField, EmbedBuilder, ActivityType} = require('discord.js'); 
 //use nodemon to start
 
 const client = new Client({
@@ -12,9 +12,37 @@ const client = new Client({
     ],
 });
 
+let status = [
+    {
+        name: "your every move",
+        type: ActivityType.Streaming,
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    },
+    {
+        name: "your every move",
+        type: ActivityType.Streaming,
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    },
+    {
+        name: "your every move",
+        type: ActivityType.Streaming,
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    },
+    {
+        name: "your every move",
+        type: ActivityType.Streaming,
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    },
+]
+
 //eventHandler(client);
 client.on('ready', (c) => {
     console.log(`✅ ${c.user.tag} is online.`);
+
+    setInterval(() => {
+        let random = Maath.floor(Math.random() * status.length);
+        client.user.setActivity(status[random]);
+    }, 10000);
 });
 
 client.on('interactionCreate', async (interaction) => {
