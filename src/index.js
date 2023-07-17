@@ -1,6 +1,7 @@
 require('dotenv').config(); //get global var
 
-const {Client, IntentsBitField, EmbedBuilder, ActivityType} = require('discord.js'); 
+const {Client, IntentsBitField, EmbedBuilder, ActivityType, InviteTargetType} = require('discord.js'); 
+const { Configuration, OpenAIApi } = require('openai');
 //use nodemon to start
 
 const client = new Client({
@@ -70,10 +71,51 @@ client.on('interactionCreate', async (interaction) => {
     }
 })
 
-client.on('messageCreate', (message)=> { //()=> is a callback function
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_TOKEN,
+})
+const openai = new OpenAIApi(configuration);
+
+client.on('messageCreate', async (message)=> { //()=> is a callback function
     if(message.author.bot){
         return;
     }
+    if(message.channelId !== "1130590867233718282"){
+        return;
+    }
+    if(message.content.startsWith("!")){
+        return;
+    }
+
+    try{
+        await message.channel.sendTyping();
+
+        let prevMsg = await message.channel.messages.fetch({limit: 25});
+        prevMsg.sort((a, b) => a - b);
+        
+        let conversationLog = '';
+
+        prevMsg.forEach((msg) => {
+            if(msg.content.startsWith('!')) return;
+
+            conversationLog += `\n${msg.author.username}: ${msg.content}`
+        });
+
+        const result = await openai.createCompletion({
+            model: 'text-davinci-003',
+            prompt: `${client.user.username} is a chatbot
+
+            ${client.user.username}: Hey! What can I do for you?
+            ${conversationLog}
+            ${client.user.username}:
+            `,
+        });
+
+        message.reply(result.data.choices[0].text);
+    }catch(e){
+        console.log(`There was an error: ${error}`);
+    }
+
 
     if(message.content === 'hello'){
         message.reply('Hey!');
