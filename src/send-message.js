@@ -27,14 +27,14 @@ const roles = [
     },
     {
         id: '1126152936280555520',
-        label: 'CS'
+        label: 'CSGO'
     },
 ]
 
 
 client.on('ready', async (c) => {
     try{
-        const channel = await client.channels.cache.get('1128776191680184402')
+        const channel = await client.channels.cache.get('1129124235764310087')
         if(!channel) return;
 
         const row = new ActionRowBuilder();
